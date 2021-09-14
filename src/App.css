@@ -3,8 +3,9 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  /* animation: App-logo-spin infinite 20s linear; */
+  height: 20px;
+  margin-right: 10px;
 }
 
 .App-header {
@@ -54,4 +55,8 @@ tr {
 
 .card {
   width: 18rem;
+}
+
+.tourist-cards {
+  padding: 5px 0 20px 0;
 }
