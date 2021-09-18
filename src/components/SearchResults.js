@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 
 const daysBetweenDates = (dateA, dateB) => {
@@ -12,23 +12,44 @@ const calculateBookingLength = booking => {
   return daysBetweenDates(booking.checkOutDate, booking.checkInDate);
 };
 
-const TableRow = props => {
-  return (
-    <tr>
-      <th scope="row">{props.booking.id}</th>
-      <td>{props.booking.title}</td>
-      <td>{props.booking.firstName}</td>
-      <td>{props.booking.surname}</td>
-      <td>{props.booking.email}</td>
-      <td>{props.booking.roomId}</td>
-      <td>{props.booking.checkInDate}</td>
-      <td>{props.booking.checkOutDate}</td>
-      <td>{calculateBookingLength(props.booking)}</td>
-    </tr>
-  );
-};
+const TableRow = props => (
+  <tr
+    className={props.isSelected ? "selected-search-row" : undefined}
+    onClick={props.handleClick}
+  >
+    <th scope="row">{props.booking.id}</th>
+    <td>{props.booking.title}</td>
+    <td>{props.booking.firstName}</td>
+    <td>{props.booking.surname}</td>
+    <td>{props.booking.email}</td>
+    <td>{props.booking.roomId}</td>
+    <td>{props.booking.checkInDate}</td>
+    <td>{props.booking.checkOutDate}</td>
+    <td>{calculateBookingLength(props.booking)}</td>
+  </tr>
+);
 
 const SearchResults = props => {
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  // removes or adds an index to the selectedRows state array variable
+  const toggleSelectedAtPosition = index => {
+    // check if the given index is in the selectedRows array
+    if (selectedRows.includes(index)) {
+      // if it is:
+      // create a new array without this index
+      const newArray = selectedRows.filter(i => i !== index);
+      // setSelectedRows with this new array
+      setSelectedRows(newArray);
+    } else {
+      // if it's NOT:
+      //create a new array which incldues this index
+      const newArray = selectedRows.concat(index);
+      // setSelectedRows with this new array
+      setSelectedRows(newArray);
+    }
+  };
+
   return (
     <table className="table">
       <thead>
@@ -46,7 +67,12 @@ const SearchResults = props => {
       </thead>
       <tbody>
         {props.results.map((booking, i) => (
-          <TableRow key={i} booking={booking} />
+          <TableRow
+            key={i}
+            booking={booking}
+            handleClick={() => toggleSelectedAtPosition(i)}
+            isSelected={selectedRows.includes(i)}
+          />
         ))}
       </tbody>
     </table>
