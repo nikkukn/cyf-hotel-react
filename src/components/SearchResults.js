@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import moment from "moment";
 
+import CustomerProfile from "./CustomerProfile";
+
 const daysBetweenDates = (dateA, dateB) => {
   const firstMoment = moment(dateA);
   const secondMoment = moment(dateB);
@@ -26,12 +28,16 @@ const TableRow = props => (
     <td>{props.booking.checkInDate}</td>
     <td>{props.booking.checkOutDate}</td>
     <td>{calculateBookingLength(props.booking)}</td>
+    <td>
+      <button onClick={() => props.setShowProfile(props.booking.id)}>
+        Show Profile
+      </button>
+    </td>
   </tr>
 );
 
 const SearchResults = props => {
   const [selectedRows, setSelectedRows] = useState([]);
-
   // removes or adds an index to the selectedRows state array variable
   const toggleSelectedAtPosition = index => {
     // check if the given index is in the selectedRows array
@@ -63,6 +69,7 @@ const SearchResults = props => {
           <th scope="col">Check-in</th>
           <th scope="col">Check-out</th>
           <th scope="col">Number of Nights</th>
+          <th scope="col" />
         </tr>
       </thead>
       <tbody>
@@ -70,6 +77,7 @@ const SearchResults = props => {
           <TableRow
             key={i}
             booking={booking}
+            setShowProfile={val => props.onShowCustomerProfile(val)}
             handleClick={() => toggleSelectedAtPosition(i)}
             isSelected={selectedRows.includes(i)}
           />
